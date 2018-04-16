@@ -65,7 +65,18 @@
         return Math.ceil(countElements/countElementsOnPage);
     }
 
-    
+    function createLinks(countPages) {
+        for (var i = 1; i <= countPages; i++){
+            var tagLink = document.createElement("a");
+            tagLink.setAttribute("href", "#");
+            var nameOfLink = document.createTextNode(i);
+            tagLink.appendChild(nameOfLink);
+            document.getElementsByClassName("pagination")[0].appendChild(tagLink);
+        }
+    }
+
+    var countPages = countPages(event.length);
+    createLinks(countPages);
 
 </script>
 </body>
