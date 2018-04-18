@@ -10,13 +10,13 @@
 <body>
 <table id="tableOfEmployee" border="1">
     <thead>
-    <tr>
-        <th>ID</th>
-        <th>First name</th>
-        <th>Last name</th>
-        <th>Date of birth</th>
-        <th>Company</th>
-        <th>Note</th>
+    <tr id="tableHeader">
+        <th data-sort="id">ID</th>
+        <th data-sort="firstName">First Name</th>
+        <th data-sort="lastName">Last Name</th>
+        <th data-sort="dateOfBirth">Date of Birth</th>
+        <th data-sort="company">Company</th>
+        <th data-sort="note">Note</th>
     </tr>
     </thead>
     <tbody id="dateOfEmployee">
@@ -28,14 +28,21 @@
 </div>
 
 <script>
-    function showData(numberOfPage) {
+    var numberPage = 1;
+    var keyOfSort = "id";
 
+    function getData() {
         var data = '[{"id":1,"firstName":"Jan","lastName":"Kowalski","dateOfBirth":"1.7.1990 11:35","company":"XSolve","note":90},{"id":4,"firstName":"Justyna","lastName":"Kowalska","dateOfBirth":"4.02.1976 14:37","company":"XSolve","note":91},{"id":2,"firstName":"Krzysztof","lastName":"Krawczyk","dateOfBirth":"28.10.1950 2:15","company":"Chilid","note":27},{"id":3,"firstName":"Boguslaw","lastName":"Linda","dateOfBirth":"03.01.1963 23:10","company":"XSolve","note":50},{"id":5,"firstName":"Krzysztof","lastName":"Kononowicz","dateOfBirth":"10.10.1910 18:00","company":"Chilid","note":77},{"id":6,"firstName":"Maryla","lastName":"Rodowicz","dateOfBirth":"29.02.1936 11:35","company":"XSolve","note":8},{"id":7,"firstName":"Edyta","lastName":"Gorniak","dateOfBirth":"14.11.1972 06:35","company":"XSolve","note":25},{"id":8,"firstName":"Dawid","lastName":"Podsiadlo","dateOfBirth":"23.05.1993 16:15","company":"Chilid","note":19},{"id":9,"firstName":"Elvis","lastName":"Presley","dateOfBirth":"09.01.1935 01:35","company":"XSolve","note":8},{"id":1,"firstName":"Jan","lastName":"Kowalski","dateOfBirth":"1.7.1990 11:35","company":"XSolve","note":90},{"id":4,"firstName":"Justyna","lastName":"Kowalska","dateOfBirth":"4.02.1976 14:37","company":"XSolve","note":91},{"id":2,"firstName":"Krzysztof","lastName":"Krawczyk","dateOfBirth":"28.10.1950 2:15","company":"Chilid","note":27},{"id":3,"firstName":"Boguslaw","lastName":"Linda","dateOfBirth":"03.01.1963 23:10","company":"XSolve","note":50},{"id":5,"firstName":"Krzysztof","lastName":"Kononowicz","dateOfBirth":"10.10.1910 18:00","company":"Chilid","note":77},{"id":6,"firstName":"Maryla","lastName":"Rodowicz","dateOfBirth":"29.02.1936 11:35","company":"XSolve","note":8},{"id":7,"firstName":"Edyta","lastName":"Gorniak","dateOfBirth":"14.11.1972 06:35","company":"XSolve","note":25},{"id":8,"firstName":"Dawid","lastName":"Podsiadlo","dateOfBirth":"23.05.1993 16:15","company":"Chilid","note":19},{"id":9,"firstName":"Elvis","lastName":"Presley","dateOfBirth":"09.01.1935 01:35","company":"XSolve","note":8},{"id":1,"firstName":"Jan","lastName":"Kowalski","dateOfBirth":"1.7.1990 11:35","company":"XSolve","note":90},{"id":4,"firstName":"Justyna","lastName":"Kowalska","dateOfBirth":"4.02.1976 14:37","company":"XSolve","note":91},{"id":2,"firstName":"Krzysztof","lastName":"Krawczyk","dateOfBirth":"28.10.1950 2:15","company":"Chilid","note":27},{"id":3,"firstName":"Boguslaw","lastName":"Linda","dateOfBirth":"03.01.1963 23:10","company":"XSolve","note":50},{"id":5,"firstName":"Krzysztof","lastName":"Kononowicz","dateOfBirth":"10.10.1910 18:00","company":"Chilid","note":77},{"id":6,"firstName":"Maryla","lastName":"Rodowicz","dateOfBirth":"29.02.1936 11:35","company":"XSolve","note":8},{"id":7,"firstName":"Edyta","lastName":"Gorniak","dateOfBirth":"14.11.1972 06:35","company":"XSolve","note":25},{"id":8,"firstName":"Dawid","lastName":"Podsiadlo","dateOfBirth":"23.05.1993 16:15","company":"Chilid","note":19},{"id":9,"firstName":"Elvis","lastName":"Presley","dateOfBirth":"09.01.1935 01:35","company":"XSolve","note":8}]';
+        return JSON.parse(data);
+    }
 
-        var event = JSON.parse(data);
-        var sortResult = sortOfKey(event, "id");
+    function showData() {
 
-        var pagin = pagination(sortResult, numberOfPage);//
+
+        var arrayOfData = getData();
+        var sortResult = sortOfKey(arrayOfData, keyOfSort);
+
+        var pagin = pagination(sortResult, numberPage);
 
 
 
@@ -53,7 +60,7 @@
                 htmlToInsert.innerHTML = value[key];
 
                 //document.getElementById("dateOfEmployee").insertAdjacentHTML('beforeend', htmlToInsert);
-                console.log(htmlToInsert);
+
                 element.appendChild(htmlToInsert);
 
             }
@@ -62,11 +69,11 @@
         });
 
 
-        var countyPages = countPages(event.length);
+        var countyPages = countPages(arrayOfData.length);
         createLinks(countyPages);
     }
 
-    showData(1);
+    showData();
 
     function pagination (data, number){
         var countElementsOnPage = 5;
@@ -82,7 +89,7 @@
         for (var i = 1; i <= countPages; i++){
             var tagLink = document.createElement("a");
             tagLink.setAttribute("href", "#");
-            tagLink.addEventListener("click", showContent);
+            tagLink.addEventListener("click", showContentAfterCLick);
             var nameOfLink = document.createTextNode(i);
             tagLink.appendChild(nameOfLink);
             document.getElementsByClassName("pagination")[0].appendChild(tagLink);
@@ -90,13 +97,14 @@
         }
     }
 
-    function showContent() {
-        showData(this.innerHTML);
+    function showContentAfterCLick() {
+        numberPage = this.innerHTML;
+        showData();
 
     }
 
 
-    function sortOfKey (arrayToSort, key, reverse) {
+    function sortOfKey (arrayToSort, key) {
         arrayToSort.sort(function (a, b) {
             if (a[key] > b[key]) {
                 return 1;
@@ -110,6 +118,18 @@
         return arrayToSort;
     }
 
+    function nameAttribute() {
+        var childrenOfTable = document.getElementById("tableHeader").children;
+        for(var i = 0; i < childrenOfTable.length; i++){
+            childrenOfTable[i].addEventListener("click", function () {
+                keyOfSort = this.getAttribute('data-sort');
+                showData();
+            });
+        }
+
+
+    }
+    nameAttribute();
 
 
 
