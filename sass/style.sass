@@ -1,3 +1,4 @@
+@import "normalize"
 body
   font-family: 'Open Sans', sans-serif
 
@@ -9,33 +10,49 @@ body
     background-color: #5b94ff
     height: auto
     min-height: 100vh
+    flex-direction: column
+    .people
+      padding: 50px 0 0 0
+
     h1
       color: #fff
+      padding-bottom: 10px
+
 
     #tableOfEmployee
       background-color: white
       width: 60%
-      border: 1px solid #DAE0E9
-      border-radius: 10px
+
+      //border-radius: 10px
       border-collapse: collapse
       #tableHeader
         height: 50px
         font-size: 14px
-        border: 1px solid #DAE0E9
+
         background-color: #E5EEFB
+        th
+          border-left: 1px solid #DAE0E9
+          border-right: 1px solid #DAE0E9
+          text-align: center
+          .fa-sort
+            color: #3A5071
+
 
       #dateOfEmployee
 
         tr
 
           td
+            border-left: 1px solid #DAE0E9
+            border-right: 1px solid #DAE0E9
+
             text-align: center
             height: 50px
             font-size: 16px
 
 
       tr:nth-child(even)
-        background-color: #F1F6FC
+        background-color: #E5EEFB
 
 
     .pagination
@@ -43,8 +60,21 @@ body
       justify-content: center
       align-content: center
       flex-wrap: wrap
+      padding-top: 30px
       a
         text-decoration: none
         color: #272F3E
         font-weight: bold
+        padding: 0 7px 0 7px
+      .active
+        color: white
+      a:hover:not(.active)
+        color: white
+
+    .footer
+      padding: 50px 0 20px 0
+      color: white
+
+
+
 
